@@ -1,0 +1,197 @@
+{% extends 'control_panel/base_control_panel/../../../../core/templates/core/base/base_template.html' %}
+{% load static %}
+{% block content %}
+
+
+    <form action="{% url 'nuovo_corso' %}" method="POST" id="add_course_id">{% csrf_token %}</form>
+    <form action="{% url 'course_m2m' %}" method="POST" id="add_course_day_hours">{% csrf_token %}</form>
+    <div class="row">
+        <div class="col-lg-6 col-xl-6 col-12">
+            <div class="card mb-4">
+                {#           <h2>Gestione corsi</h2>#}
+                {##}
+                {#            {% if count_trainers == 0 %}#}
+                {#                <div class="sufee-alert alert with-close alert-warning alert-dismissible fade show"#}
+                {#                     role="alert">#}
+                {#                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">#}
+                {#                        <span aria-hidden="true">&times;</span>#}
+                {#                    </button>#}
+                {#                    <h4 class="alert-heading">Attenzione!</h4>#}
+                {#                    <p>Non sono stati trovati istruttori nel sistema. Si prega di registrarli prima di#}
+                {#                        iniziare ad inserire il corso.</p>#}
+                {#                    <hr>#}
+                {#                    <p class="mb-0">Puoi utilizzare l'apposita sezione o premere il pulsante <i#}
+                {#                            class="fa fa-plus"></i></p>#}
+                {#                </div>#}
+                {#            {% endif %}#}
+
+                <h1 class="m-3"> Inserisci Corso </h1>
+
+                <div id="details_order_collapse" class="collapse show" aria-labelledby="details_order_heading"
+                     data-parent="#accordion">
+                    <div class="card-content">
+                        <section class="p-3">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-xl-6 col-12">
+                                    <div class="form-group">
+                                        <label class="form-control-label">Nome</label>
+                                        <div class="input-group">
+                                            {{ form.name }}
+                                        </div>
+                                        <small class="form-text text-muted">{{ form.name.help_text }}</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-control-label">Descrizione del corso</label>
+                                        <div class="input-group">
+                                            {{ form.description }}
+                                        </div>
+                                        <small class="form-text text-muted">{{ form.description.help_text }}</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-control-label">Prezzo del corso</label>
+                                        <div class="input-group">
+                                            {{ form.price }}
+                                        </div>
+                                        <small class="form-text text-muted">{{ form.price.help_text }}</small>
+                                    </div>
+
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-xl-6 col-12">
+                                    <div class="form-group">
+                                        <label class="form-control-label">Data inizio corso</label>
+                                        <div class="input-group">
+                                            {{ form.start_date }}
+                                        </div>
+                                        <small class="form-text text-muted">{{ form.start_date.help_text }}</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-control-label">Data di fine corso</label>
+                                        <div class="input-group">
+                                            {{ form.end_date }}
+                                        </div>
+                                        <small class="form-text text-muted">{{ form.end_date.help_text }}</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-control-label">Numero minimo di
+                                            partecipanti</label>
+                                        <div class="input-group">
+                                            {{ form.min_subscribers }}
+                                        </div>
+                                        <small class="form-text text-muted">{{ form.min_subscribers.help_text }}</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-control-label">Numero massimo di
+                                            partecipanti</label>
+                                        <div class="input-group">
+                                            {{ form.max_subscribers }}
+                                        </div>
+                                        <small class="form-text text-muted">{{ form.max_subscribers.help_text }}</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-control-label">Scegli istruttore</label>
+                                        <div class="input-group">
+                                            {{ form.trainer }}
+                                        </div>
+
+                                        <a class="add-trainer-button" data-toggle="tooltip"
+                                           data-placement="top"
+                                           title="Aggiungi istruttore">
+                                            <button type="button" class="btn btn-primary btn-xs my-2"><i
+                                                    class="iconsminds-add"></i> Aggiungi istruttore
+                                            </button>
+                                        </a>
+
+                                    </div>
+                                </div>
+                                <div id="add_trainer_box">
+                                    {% include 'control_panel/trainer/new_trainer_box.html' %}
+                                </div>
+                            </div>
+
+                        </section>
+                        <div class="card-footer">
+                            <button type="submit" form="add_course_id" class="btn btn-success btn-xs">
+                                <i class="fa fa-check"></i> Inserisci
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-xl-6 col-12">
+            <div class="card">
+                <h1 class="m-3"> Gestisci giorni e orari corsi </h1>
+                <div id="course_day_hours_collapse" class="collapse show" aria-labelledby="course_day_hours_heading"
+                     data-parent="#accordion">
+                    {% if count_hours == 0 %}
+                        <div class="sufee-alert alert with-close alert-warning alert-dismissible fade show"
+                             role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h4 class="alert-heading">Attenzione!</h4>
+                            <p>Non sono state trovate fasce orarie nel sistema. Si prega di inserirle prima di
+                                iniziare ad inserire il corso.</p>
+                            <hr>
+                            <p class="mb-0">Puoi utilizzare l'apposita sezione o premere il pulsante <i
+                                    class="fa fa-plus"></i></p>
+                        </div>
+                    {% endif %}
+                    <section class="p-3">
+                        <div class="row">
+                            <div class="col-md-4 col-xl-4 col-12">
+                                <div class="input-group">
+                                    <label class="form-control-label">Seleziona corso</label>
+                                    {{ form_m2m.course }}
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-xl-4 col-12">
+                                <div class="input-group">
+                                    <label class="form-control-label">Seleziona giorno</label>
+                                    {{ form_m2m.day }}
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-xl-4 col-12">
+                                <div class="form-group">
+                                    <label class="form-control-label">Seleziona fasce orarie</label>
+                                    <div class="input-group">
+                                        {{ form_m2m.hours }}
+                                    </div>
+                                    <a class="add-hour-button float-right" data-toggle="tooltip"
+                                       data-placement="top"
+                                       title="Aggiungi fascia">
+                                        <button type="button" class="btn btn-primary btn-xs my-2"><i
+                                                class="iconsminds-add"></i> Aggiungi fascia oraria
+                                        </button>
+                                    </a>
+                                    <small class="form-text text-muted">{{ form.hours.help_text }}</small>
+
+                                </div>
+                            </div>
+
+                        </div>
+                          <div id="add_hours_box">
+                                {% include 'control_panel/hours/add_hours_box.html' %}
+                            </div>
+                    </section>
+                    <div class="card-footer">
+                        <button type="submit" form="add_course_day_hours" class="btn btn-success btn-xs">
+                            <i class="fa fa-check"></i> Inserisci
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+
+    </div>
+
+
+{% endblock %}
+
+{% block js %}
+
+{% endblock %}

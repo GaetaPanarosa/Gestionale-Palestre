@@ -1,0 +1,43 @@
+{% extends 'core/base/base_template.html' %}
+{% load static %}
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            <h1 class="mx-3 mt-4">Corsi</h1>
+
+        </div>
+
+        <div class="card-body">
+            <div class="top-left-button-container mb-3">
+                <div class="btn-group">
+                    <button class="btn btn-outline-primary btn-lg dropdown-toggle" type="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        ESPORTA
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" id="dataTablesExcel" href="#">Excel</a>
+                        <a class="dropdown-item" id="dataTablesPrint" href="#">Stampa</a>
+                        <a class="dropdown-item" id="dataTablesPdf" href="#">Pdf</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 mb-4 data-table-rows data-tables-hide-filter">
+
+                <table id="course_table" class="data-table responsive nowrap">
+                    <thead>
+                    <tr>
+                        <th>Corso</th>
+                        <th>Data Inizio</th>
+                        <th>Data Fine</th>
+                        <th>Prezzo</th>
+                        <th>Istruttore</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

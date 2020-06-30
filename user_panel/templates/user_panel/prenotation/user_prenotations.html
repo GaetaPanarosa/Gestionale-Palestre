@@ -1,0 +1,67 @@
+{% extends 'user_panel/base_user_panel/base_template.html' %}
+{% load static %}
+{% block content %}
+    <div class="col-xs-12 col-sm-12 col-lg">
+        <div class="card">
+            <div class="card-header">
+                <h2>Le mie prenotazioni</h2>
+                {% if user.sex.sex   == 'Uomo' %}
+                    <p>Benvenuto {{ user.first_name }} {{ user.last_name }}, in questa sezione troverai lo storico delle
+                        tue prenotazioni.</p>
+                    {#                    <p>Per modificare o disdire, premi sulla riga della prenotazione e segui le istruzioni.</p>#}
+                {% else %}
+                    <p>Benvenuta {{ user.first_name }} {{ user.last_name }}, in questa sezione troverai lo storico delle
+                        tue prenotazioni.</p>
+                    {#                    <p>Per modificare o disdire, premi sulla riga della prenotazione e segui le istruzioni.</p>#}
+                {% endif %}
+            </div>
+            <div class="card-body">
+                <table id="user_prenotations" class="table table-responsive-lg table-striped table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Corso</th>
+                        <th>Giorno</th>
+                        <th>Disdetta</th>
+                    </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script>
+        function dismissPrenotation(pk, date) {
+            jQuery.ajax({
+                type: 'GET',
+                url: '/profile/dismiss_prenotation/',
+                data: {'pk': pk, 'date': date},
+                success: function (response) {
+                    if (response.status == '200') {
+                        iziToast.success({
+                            title: 'Operazione Effettuata!',
+                            message: response.reason,
+                            position: 'center',
+                            duration: 600,
+                            onClosing: function () {
+                                location.reload();
+                            }
+                        })
+                    } else {
+                        iziToast.error({
+                            title: 'Operazione non riuscita!',
+                            message: response.reason,
+                            position: 'center',
+                            duration: 500,
+                            onClosing: function () {
+                                event.preventDefault()
+                            }
+                        })
+                    }
+                }
+                })
+        }
+    </script>
+{% endblock %}
