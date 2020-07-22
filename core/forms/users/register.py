@@ -14,21 +14,23 @@ class RegisterForm(forms.ModelForm):
     password1 = forms.CharField(
         label=_("Password"),
         strip=False,
-        widget=forms.PasswordInput(attrs={'autocomplete': 'new-password', 'class': 'form-control mb-2','form':'register_form'}),
+        widget=forms.PasswordInput(
+            attrs={'autocomplete': 'new-password', 'class': 'form-control mb-2', 'form': 'register_form'}),
         help_text=password_validation.password_validators_help_text_html(),
     )
     password2 = forms.CharField(
         label=_("Password confirmation"),
-        widget=forms.PasswordInput(attrs={'autocomplete': 'new-password', 'class': 'form-control mb-2','form':'register_form'}),
+        widget=forms.PasswordInput(
+            attrs={'autocomplete': 'new-password', 'class': 'form-control mb-2', 'form': 'register_form'}),
         strip=False,
         help_text=_("Inserisci la stessa password di sopra, per la verifica."),
     )
     username = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'form-control mb-2','form':'register_form'}),
+        widget=forms.TextInput(attrs={'class': 'form-control mb-2', 'form': 'register_form'}),
     )
 
     address = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'form-control mb-2','form':'register_form'}),
+        widget=forms.TextInput(attrs={'class': 'form-control mb-2', 'form': 'register_form'}),
         label='Indirizzo di abitazione')
 
     # cap = forms.CharField(
@@ -38,7 +40,7 @@ class RegisterForm(forms.ModelForm):
     #                            label ='CAP',max_length=5)
     phone = forms.CharField(
         error_messages={'Errore': 'Il numero di telefono inserito non è corretto'},
-        widget=forms.TextInput(attrs={'class': 'form-control mb-2','form':'register_form', 'type':'number'}),
+        widget=forms.TextInput(attrs={'class': 'form-control mb-2', 'form': 'register_form', 'type': 'number'}),
         help_text='Il numero di telefono deve essere lungo 10 cifre',
         label='Telefono'
     )
@@ -49,26 +51,31 @@ class RegisterForm(forms.ModelForm):
     # )
 
     date_of_birth = forms.DateField(
-        widget=forms.DateInput(attrs={'class': 'form-control mb-2','form':'register_form', 'type': 'date'}, format='%Y-%m-%d'),
+        widget=forms.DateInput(attrs={'class': 'form-control mb-2', 'form': 'register_form', 'type': 'date'},
+                               format='%Y-%m-%d'),
         label='Data di Nascita')
-    sex = forms.ModelChoiceField(queryset=Sex.objects.all(), widget=forms.Select(attrs={'class': 'form-control mb-2','form':'register_form'}),
+    sex = forms.ModelChoiceField(queryset=Sex.objects.all(),
+                                 widget=forms.Select(attrs={'class': 'form-control mb-2', 'form': 'register_form'}),
                                  label='Sesso')
-    town = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control mb-2','form':'register_form'}), label='Città')
-    town_birth = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control mb-2','form':'register_form'}), label='Città di nascita')
+    town = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control mb-2', 'form': 'register_form'}),
+                           label='Città')
+    town_birth = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control mb-2', 'form': 'register_form'}),
+                                 label='Città di nascita')
     # state = forms.ModelChoiceField(queryset=States.objects.all(), widget=forms.Select(attrs={'class':'form-control mb-2'}), label='Paese')
-    codice_fiscale = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control mb-2','form':'register_form'}),
-                                     label='Codice Fiscale', max_length=16)
+    codice_fiscale = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control mb-2', 'form': 'register_form'}),
+        label='Codice Fiscale', max_length=16)
 
     class Meta:
         model = CustomUser
         fields = ('username', 'password1', 'password2', 'first_name', 'last_name', 'email', 'phone', 'address',
-                  'sex', 'date_of_birth', 'town', 'codice_fiscale','town_birth')
+                  'sex', 'date_of_birth', 'town', 'codice_fiscale', 'town_birth')
         widgets = {
-            'first_name': forms.TextInput(attrs={'class': 'form-control mb-2', 'form':'register_form'}),
-            'last_name': forms.TextInput(attrs={'class': 'form-control mb-2','form':'register_form'}),
-            'email': forms.EmailInput(attrs={'class': 'form-control mb-2','form':'register_form'}),
-            'phone': forms.TextInput(attrs={'class': 'form-control mb-2','form':'register_form'}),
-            'address': forms.TextInput(attrs={'class': 'form-control mb-2','form':'register_form'}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control mb-2', 'form': 'register_form'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control mb-2', 'form': 'register_form'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control mb-2', 'form': 'register_form'}),
+            'phone': forms.TextInput(attrs={'class': 'form-control mb-2', 'form': 'register_form'}),
+            'address': forms.TextInput(attrs={'class': 'form-control mb-2', 'form': 'register_form'}),
         }
 
     def __init__(self, *args, **kwargs):

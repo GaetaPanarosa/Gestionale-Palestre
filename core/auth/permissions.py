@@ -54,7 +54,6 @@ class CustomManagement():
         try:
             return ContentType.objects.get(app_label=str(app_label).lower(), model=str(model).lower())
         except Exception as e:
-            print(e)
             return e
 
     ##################################################################################################################
@@ -82,13 +81,12 @@ class CustomManagement():
     def create_permission(self, permission, app_label, model):
         try:
             for i in permission:
-                # Permission.objects.get_or_create(codename=str(i[0]).lower(), name=str(i[1]).lower(),
-                #                                  content_type=ContentType.objects.get(app_label=str(app_label).lower(),
-                #                                                                       model=str(model).lower()))
-                Permission.objects.get_or_create(codename=str(i[0]), name=str(i[1]), content_type_id=2)
+                Permission.objects.get_or_create(codename=str(i[0]).lower(), name=str(i[1]).lower(),
+                                                 content_type=ContentType.objects.get(app_label=str(app_label).lower(),
+                                                                                      model=str(model).lower()))
+                # Permission.objects.get_or_create(codename=str(i[0]), name=str(i[1]), content_type_id=2)
             return Permission.objects.all().name
         except Exception as e:
-            print('Exception ', e)
             return e
 
     ##################################################################################################################
@@ -131,7 +129,6 @@ class CustomManagement():
             return str(group.name) + ' - ' + Permission.objects.get(
                 Q(codename=(permission)) | Q(name=str(permission))).name
         except Exception as e:
-            print('Exception: ', e)
             return e
 
     ##################################################################################################################
@@ -151,5 +148,4 @@ class CustomManagement():
         user = apps.get_model(app_label=str(app_label), model_name=model).objects.get(username=str(user))
         group = Group.objects.get(name=str(group))
         group.user_set.add(user)
-        print(user)
         return str(group.name) + ' - ' + str(user)

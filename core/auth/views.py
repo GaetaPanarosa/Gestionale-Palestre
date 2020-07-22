@@ -1,7 +1,6 @@
 from urllib.parse import urlparse, urlunparse
 
 from django.conf import settings
-# Avoid shadowing the login() and logout() views below.
 from django.contrib.auth import (
     REDIRECT_FIELD_NAME, get_user_model, login as auth_login,
     logout as auth_logout, update_session_auth_hash,
@@ -46,7 +45,7 @@ class LoginView(SuccessURLAllowedHostsMixin, FormView, TemplateView):
     form_class = AuthenticationForm
     authentication_form = None
     redirect_field_name = REDIRECT_FIELD_NAME
-    template_name = 'website/base_templates/navbar.html'
+    template_name = 'base_templates/navbar.html'
     redirect_authenticated_user = True
     extra_context = None
     redirect_url = None
@@ -55,6 +54,7 @@ class LoginView(SuccessURLAllowedHostsMixin, FormView, TemplateView):
     @method_decorator(csrf_protect)
     @method_decorator(never_cache)
     def dispatch(self, request, *args, **kwargs):
+        print(request)
         if 'next' in request.GET:
             self.redirect_url = request.GET.get('next')
         if self.redirect_authenticated_user and self.request.user.is_authenticated:
@@ -73,13 +73,14 @@ class LoginView(SuccessURLAllowedHostsMixin, FormView, TemplateView):
         print(dict(form.errors.items()))
         return JsonResponse({'status': 'error', 'reason': [v[0] for k, v in form.errors.items()]}, safe=False,
                             content_type='application/json')
+
     def get_success_url(self):
         url = self.get_redirect_url()
         if self.request.user.groups.filter(Q(name='administrator') | Q(name='editor')).exists():
             self.request.session['pk'] = int(self.request.user.pk)
             return url or resolve_url(settings.LOGIN_REDIRECT_URL_ADMIN)
         if self.request.user.groups.filter(name='user').exists():
-            self.request.session [ 'pk' ] = int(self.request.user.pk)
+            self.request.session['pk'] = int(self.request.user.pk)
             return url or resolve_url(settings.LOGIN_REDIRECT_URL_UTENTE)
         return url or resolve_url(settings.LOGIN_URL)
 
@@ -113,7 +114,6 @@ class LoginView(SuccessURLAllowedHostsMixin, FormView, TemplateView):
         return JsonResponse({'status': 'error', 'reason': [v[0] for k, v in form.errors.items()]}, safe=False,
                             content_type='application/json')
 
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         current_site = get_current_site(self.request)
@@ -127,12 +127,9 @@ class LoginView(SuccessURLAllowedHostsMixin, FormView, TemplateView):
 
 
 class LogoutView(SuccessURLAllowedHostsMixin, TemplateView):
-    """
-    Log out the user and display the 'You are logged out' message.
-    """
     next_page = None
     redirect_field_name = REDIRECT_FIELD_NAME
-    template_name = '/website/base_templates/index.html'
+    template_name = '/website/base_templates/index_control_panel.html'
     extra_context = None
 
     @method_decorator(never_cache)
@@ -140,24 +137,16 @@ class LogoutView(SuccessURLAllowedHostsMixin, TemplateView):
         auth_logout(request)
         next_page = self.get_next_page()
         if next_page:
-            # Redirect to this page until the session has been cleared.
             return HttpResponseRedirect(next_page)
         return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        """Logout may be done via POST."""
         return self.get(request, *args, **kwargs)
 
     def get_next_page(self):
         if self.next_page is not None:
             next_page = resolve_url(self.next_page)
         elif settings.LOGOUT_REDIRECT_URL:
-            # if self.request.user.groups.filter(name='amministratore').exists():
-            #     self.request.session['pk'] = int(self.request.user.pk)
-            #     next_page = resolve_url(settings.LOGIN_REDIRECT_URL_ADMIN)
-            # if self.request.user.groups.filter(Q(name='utente')|Q(name='istruttore')).exists():
-            #     self.request.session['pk'] = int(self.request.user.pk)
-            #     next_page = resolve_url(settings.LOGIN_REDIRECT_URL_UTENTE)
             next_page = resolve_url(settings.LOGOUT_REDIRECT_URL)
         else:
             next_page = self.next_page
@@ -241,7 +230,7 @@ class PasswordResetView(PasswordContextMixin, FormView):
     html_email_template_name = None
     subject_template_name = 'registration/password_reset_subject.txt'
     success_url = reverse_lazy('password_reset_done')
-    template_name = 'website/base_templates/password_reset_form.html'
+    template_name = '../../website/templates/website/../../website/templates/base_templates/password_reset_form.html'
     title = _('Password reset')
     token_generator = default_token_generator
 
@@ -268,7 +257,7 @@ INTERNAL_RESET_SESSION_TOKEN = '_password_reset_token'
 
 
 class PasswordResetDoneView(PasswordContextMixin, TemplateView):
-    template_name = 'website/base_templates/password_reset_done.html'
+    template_name = '../../website/templates/website/../../website/templates/base_templates/password_reset_done.html'
     title = _('Password reset sent')
 
 
@@ -278,7 +267,7 @@ class PasswordResetConfirmView(PasswordContextMixin, FormView):
     post_reset_login_backend = None
     reset_url_token = 'set-password'
     success_url = reverse_lazy('password_reset_complete')
-    template_name = 'website/base_templates/password_reset_confirm.html'
+    template_name = '../../website/templates/website/../../website/templates/base_templates/password_reset_confirm.html'
     title = _('Enter new password')
     token_generator = default_token_generator
 
@@ -346,7 +335,7 @@ class PasswordResetConfirmView(PasswordContextMixin, FormView):
 
 
 class PasswordResetCompleteView(PasswordContextMixin, TemplateView):
-    template_name = 'website/base_templates/password_reset_complete.html'
+    template_name = '../../website/templates/website/../../website/templates/base_templates/password_reset_complete.html'
     title = _('Password reset complete')
 
     def get_context_data(self, **kwargs):

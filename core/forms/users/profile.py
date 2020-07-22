@@ -26,7 +26,9 @@ class ProfileForm(forms.ModelForm):
                                format='%Y-%m-%d'),
         label='Data di Nascita')
     sex = forms.ModelChoiceField(queryset=Sex.objects.all(),
-                                 widget=forms.Select(attrs={'class': 'form-control select2-single select2-hidden-accessible', 'tab-index': '-1', 'data-width':'100%', 'form': 'profile_form'}),
+                                 widget=forms.Select(
+                                     attrs={'class': 'form-control select2-single select2-hidden-accessible',
+                                            'tab-index': '-1', 'data-width': '100%', 'form': 'profile_form'}),
                                  label='Sesso')
     town = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'form': 'profile_form'}),
                            label='Città')
@@ -37,33 +39,32 @@ class ProfileForm(forms.ModelForm):
         widget=forms.TextInput(attrs={'class': 'form-control', 'form': 'profile_form'}),
         label='Codice Fiscale', max_length=16)
 
-
-
     class Meta:
-      model = CustomUser
+        model = CustomUser
 
-      fields = [
-          'username',
-          'first_name',
-          'last_name',
-          'email',
-          'date_of_birth',
-          'codice_fiscale',
-          'town',
-          'town_birth',
-          'phone',
-          'address',
-          'sex',
-          'image'
-      ]
+        fields = [
+            'username',
+            'first_name',
+            'last_name',
+            'email',
+            'date_of_birth',
+            'codice_fiscale',
+            'town',
+            'town_birth',
+            'phone',
+            'address',
+            'sex',
+            'image'
+        ]
 
-      widgets = {
-          'first_name': forms.TextInput(attrs={'class': 'form-control mb-2', 'form': 'profile_form'}),
-          'last_name': forms.TextInput(attrs={'class': 'form-control mb-2', 'form': 'profile_form'}),
-          'email': forms.EmailInput(attrs={'class': 'form-control mb-2', 'form': 'profile_form'}),
-          'phone': forms.TextInput(attrs={'class': 'form-control mb-2', 'form': 'profile_form'}),
-          'address': forms.TextInput(attrs={'class': 'form-control mb-2', 'form': 'profile_form'}),
-      }
+        widgets = {
+            'first_name': forms.TextInput(attrs={'class': 'form-control mb-2', 'form': 'profile_form'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control mb-2', 'form': 'profile_form'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control mb-2', 'form': 'profile_form'}),
+            'phone': forms.TextInput(attrs={'class': 'form-control mb-2', 'form': 'profile_form'}),
+            'address': forms.TextInput(attrs={'class': 'form-control mb-2', 'form': 'profile_form'}),
+        }
+
 
 class AccountForm(forms.ModelForm):
     username = forms.CharField(
@@ -88,8 +89,8 @@ class AccountForm(forms.ModelForm):
         help_text=_("Inserisci la stessa password di sopra, per la verifica."),
     )
 
-    image = forms.ImageField(widget=forms.FileInput(attrs={'class':'custom-file-input'}))
+    image = forms.ImageField(widget=forms.FileInput(attrs={'class': 'custom-file-input'}))
 
     class Meta:
         model = CustomUser
-        fields = ['username','password1','password2','image']
+        fields = ['username', 'password1', 'password2', 'image']

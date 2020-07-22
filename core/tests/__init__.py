@@ -1,1 +1,2 @@
-from .user_tests import *
+from .permissions import *
+from .user import *

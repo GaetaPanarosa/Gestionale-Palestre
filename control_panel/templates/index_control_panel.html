@@ -1,0 +1,97 @@
+{% extends 'base/base_template.html' %}
+{% load  static %}
+{% block content %}
+    <h1>Benvenuto nel tuo pannello amministratore</h1>
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="card progress-banner" data-toggle="collapse" href="#collapseCourses"
+                 aria-expanded="true" aria-controls="collapseCourses">
+                <div class="card-body justify-content-between d-flex flex-row align-items-center">
+                    <div>
+                        <i class="iconsminds-clock mr-2 text-white align-text-bottom d-inline-block"></i>
+                        <div>
+                            <p class="lead text-white">Corsi attivi</p>
+                            {#                                    <p class="text-small text-white">Gestisci </p>#}
+                        </div>
+
+                    </div>
+                    <div>
+                        <div role="progressbar"
+                             class="progress-bar-circle progress-bar-banner position-relative" data-color="white"
+                             data-trail-color="rgba(255,255,255,0.2)" aria-valuenow="{{ courses_count }}"
+                             data-show-percent="false">
+                        </div>
+                    </div>
+                </div>
+                <div class="p-2 collapse" id="collapseCourses">
+                    {% if courses|length > 0 %}
+                        <ul>
+                            {% for course in courses %}
+                                <a href="{% url 'details_course' course.pk %}">
+                                    <li class="text-white">{{ course.name }}</li>
+                                </a>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <li class="text-white">Nessun corso presente nel
+                            <sistema class=""></sistema>
+                        </li>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+        <div class="col-lg-4">
+            <div class="card mb-4 progress-banner" data-toggle="collapse" href="#collapseUsers"
+                 aria-expanded="true" aria-controls="collapseUsers">
+                <div class="card-body justify-content-between d-flex flex-row align-items-center">
+                    <div>
+                        <i class="iconsminds-male mr-2 text-white align-text-bottom d-inline-block"></i>
+                        <div>
+                            <p class="lead text-white">Utenti registrati</p>
+                            {#                                    <p class="text-small text-white">On approval process</p>#}
+                        </div>
+                    </div>
+                    <div>
+                        <div role="progressbar"
+                             class="progress-bar-circle progress-bar-banner position-relative" data-color="white"
+                             data-trail-color="rgba(255,255,255,0.2)" aria-valuenow="{{ total_accounts }}"
+                             data-show-percent="false">
+                        </div>
+                    </div>
+                </div>
+                <div class="p-2 collapse" id="collapseUsers">
+                    <ul>
+                        {% if users_count != 0 %}
+                            <li class="text-white">Numero totale di utenti: {{ users_count }}</li>{% endif %}
+                        {% if users_count == 0 %}
+                            <li class="text-white">Nessun utente ancora registrato</li>{% endif %}
+                        {% if trainer_count != 0 %}
+                            <li class="text-white">Numero totale di istruttori: {{ trainers_count }}</li>{% endif %}
+                        {% if trainer_count == 0 %}
+                            <li class="text-white">Nessun istruttore ancora registrato</li>{% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card mb-4 progress-banner">
+                <div class="card-body justify-content-between d-flex flex-row align-items-center">
+                    <div>
+                        <i class="
+simple-icon-calendar mr-2 text-white align-text-bottom d-inline-block"></i>
+                        <div>
+                            <p class="lead text-white">Prenotazioni giornaliere</p>
+                        </div>
+                    </div>
+                    <div>
+                        <div role="progressbar"
+                             class="progress-bar-circle progress-bar-banner position-relative" data-color="white"
+                             data-trail-color="rgba(255,255,255,0.2)" aria-valuenow="{{ prenotations_count }}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

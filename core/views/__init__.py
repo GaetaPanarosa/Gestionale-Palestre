@@ -1,1 +1,4 @@
-from .general_views import *
+from .email import *
+from .general import *
+from .hours import *
+from .user import *

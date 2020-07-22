@@ -1,7 +1,3 @@
-from .courses_models import *
-from .prenotation_models import *
-from .user_models import *
-
-
-
-
+from .images import *
+from .time import *
+from .user import *
