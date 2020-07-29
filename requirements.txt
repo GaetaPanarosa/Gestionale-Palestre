@@ -1,8 +1,0 @@
-asgiref
-Django
-django-datatables-view
-mysqlclient
-pillow
-psycopg2-binary
-pytz
-sqlparse
