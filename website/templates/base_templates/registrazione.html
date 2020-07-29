@@ -1,0 +1,39 @@
+{% extends 'website/base_templates/base.html' %}
+{% load static %}
+{% block content %}
+    <section class="hero-section">
+
+        <div id="register_container">
+            <div class="hs-item set-bg">
+                <div class="container">
+                    {#                    <h1 style="color:white">LE REGISTRAZIONI SONO STATE DISABILITATE FINO A DOMANI</h1>#}
+                    <form method="post" {% url 'register' %} id="register_form">  {% csrf_token %}</form>
+                    <h1 class="register_h1">Registrati</h1>
+                    <div class="row">
+                        {% for field in form %}
+                            <div class="col-lg-4">
+                                <div class="hi-text">
+                                    {{ field.label_tag }}<br>
+                                    {{ field }}
+                                    {% if field.help_text %}
+                                        <small style="color: grey">{{ field.help_text }}</small>
+                                        <br>
+                                    {% endif %}
+                                    {% for error in field.errors %}
+                                        <p style="color: red">{{ error }}</p>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <input type="checkbox" class="mt-5" id="terms"> Ho letto e accetto i termini e condizioni generali.
+                    <button type="submit" disabled class="btn primary-btn my-5 float-right" id="register"
+                            form="register_form">Registrati
+                    </button>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

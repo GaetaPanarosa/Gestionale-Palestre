@@ -1,0 +1,173 @@
+{% extends 'core/../../../core/templates/base/base_template.html' %}
+{% load static %}
+{% block content %}
+    <div class="card mb-4">
+        <div class="row">
+            <div class="col-12 col-md-12 col-xl-4 col-lg-4">
+                <div class="card-body">
+                    <h5 class="card-title">Dettaglio prenotazione </h5>
+                    <div class="d-flex flex-row align-items-center mb-3">
+                        <a class="d-block position-relative" href="#">
+                            <i class="iconsminds-male large-icon initial-height"></i>
+                        </a>
+                        <div class="pl-3 pt-2 pr-2 pb-2">
+                            <a href="#">
+                                <p class="list-item-heading mb-1">
+                                    Utente: {{ prenotation.user.first_name }} {{ prenotation.user.last_name }}</p>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-row align-items-center mb-3">
+                        <a class="d-block position-relative" href="#">
+                            <i class="simple-icon-calendar large-icon initial-height"></i>
+                        </a>
+                        <div class="pl-3 pt-2 pr-2 pb-2">
+                            <a href="#">
+                                <p class="list-item-heading mb-1">Data
+                                    prenotata: {{ prenotation.date|date:'d/m/Y' }}</p>
+                            </a>
+                        </div>
+                    </div>
+
+
+                    <div class="d-flex flex-row align-items-center mb-3">
+                        <a class="d-block position-relative" href="#">
+                            <i class="iconsminds-blackboard large-icon initial-height"></i>
+                        </a>
+                        <div class="pl-3 pt-2 pr-2 pb-2">
+                            <a href="#">
+                                <p class="list-item-heading mb-1">Corso prenotato: {{ prenotation.course.name }}</p>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-row align-items-center mb-3">
+                        <a class="d-block position-relative" href="#">
+                            <i class="simple-icon-clock large-icon initial-height"></i>
+                        </a>
+                        <div class="pl-3 pt-2 pr-2 pb-2">
+                            <a href="#">
+                                <p class="list-item-heading mb-1">Fascia oraria: {{ prenotation.time.start_hour }}
+                                    - {{ prenotation.time.end_hour }}</p>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-12 col-md-12 col-xl-6">
+                <form method="POST" id="mod_prenotation" action="{% url 'prenotation_details' prenotation.pk %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="user" form="mod_prenotation" value="{{ prenotation.user.pk }}">
+                    <div class="card-body">
+                        <h5 class="card-title">Modifica prenotazione</h5>
+                        <div class="d-flex flex-row align-items-center mb-3">
+                            <div class="pt-2 pr-2 pb-2">
+                                <a href="#">
+                                    <p class="list-item-heading mb-1">
+                                        Utente: {{ prenotation.user.first_name }} {{ prenotation.user.last_name }}</p>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="d-flex flex-row align-items-center mb-3">
+                            <div class="form-group mb-3">
+                                <label>Scegli data</label>
+                                <div id="datepicker" data-date="{{ form.date.value |date:'Y-m-d' }}"></div>
+                                <input type="hidden" value="{{ form.date.value |date:'d/m/Y' }}" id="id_date">
+                            </div>
+                        </div>
+                        <div class="d-flex flex-row align-items-center mb-3">
+                            <div class="form-group mb-3">
+                                <label>Scegli corso: </label>
+                                {{ form.course }}
+                            </div>
+                        </div>
+                        <div class="d-flex flex-row align-items-center mb-3">
+                            <div class="form-group mb-3">
+                                <label>Scegli fascia oraria: </label>
+                                {{ form.time }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-success btn-xs">
+                            <i class="fa fa-check"></i> Modifica prenotazione
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+    <script>
+        $(document).ready(function () {
+            $.fn.datepicker.dates['en'] = {
+                days: ["Domenica", "Lunedi", "Martedi", "Mercoledi", "Giovedi", "Venerdi", "Sabato"],
+                daysShort: ["Dom", "Lun", "Mar", "Mer", "Gio", "Ven", "Sab",],
+                daysMin: ["Dom", "Lun", "Mar", "Mer", "Gio", "Ven", "Sab",],
+                months: ["Gennaio", "February", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicenbre"],
+                monthsShort: ["Gen", "Feb", "Mar", "Apr", "Mag", "Giu", "Lug", "Ago", "Set", "Ott", "Nov", "Dic"],
+
+                clear: "Clear",
+                format: "yyyy-mm-dd",
+                titleFormat: "MM yyyy", /* Leverages same syntax as 'format' */
+                weekStart: 1
+            }
+            {#var user_busy_days = ['2020-06-09','2020-06-16','2020-06-19'];#}
+            var user_buys_days =
+            {{ days }}
+            var options = {
+                inline: true,
+                sideBySide: true,
+                format: 'yyyy-mm-dd',
+                language: 'en',
+                beforeShowDay: function (date) {
+                    calender_date = date.getFullYear() + '-0' + (date.getMonth() + 1) + '-' + ('0' + date.getDate()).slice(-2);
+                    console.log(calender_date)
+                    var search_index = $.inArray(calender_date, user_busy_days);
+                    if (search_index > -1) {
+                        return {classes: 'free', tooltip: 'User available on this day.'};
+                    } else {
+                        return {classes: 'busy', tooltip: 'User not available on this day.'};
+                    }
+                }
+            }
+
+            $('#datepicker').datepicker(options);
+        })
+        $('#mod_prenotation').submit(function (event) {
+            console.log(jQuery(this).serialize())
+            jQuery.ajax({
+                data: jQuery(this).serialize(),
+                type: jQuery(this).attr('method'), // GET or POST
+                url: jQuery(this).attr('action'), // the file to call
+                success: function (response) {
+                    if (response.status == '200') {
+                        iziToast.success({
+                            title: 'Operazione Effettuata!',
+                            message: response.reason,
+                            position: 'center',
+                            duration: 400,
+                            timeout: 500,
+                            onClosing: function () {
+                                location.reload();
+                            }
+                        })
+                    } else {
+                        iziToast.error({
+                            title: 'Operazione non riuscita!',
+                            message: response.reason,
+                            position: 'center',
+                            onClosing: function () {
+                                event.preventDefault()
+                            }
+                        });
+                    }
+                }
+            });
+        });
+    </script>
+{% endblock %}

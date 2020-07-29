@@ -1,0 +1,27 @@
+{% extends 'core/../../../core/templates/base/base_template.html' %}
+{% load static %}
+{% block content %}
+    <div class="col-xs-12 col-sm-12 col-lg">
+        <div class="card">
+            <h1 class="m-3">Utenti registrati</h1>
+
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="users_table" class="data-table responsive nowrap dataTable no-footer dtr-inline">
+                        <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Cognome</th>
+                            <th>Telefono</th>
+                            {#                        <th>Fascia Oraria</th>#}
+                            {#                        <th>Istruttore</th>#}
+                            {#                        <th>Prenotato il</th>#}
+                        </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

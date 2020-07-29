@@ -1,0 +1,45 @@
+{% extends 'base/base_template.html' %}
+{% block content %}
+    <div class="content mt-3">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="m-3">Gestione fasce orarie</h2>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-xl-6 col-12">
+                        <div class="form-group">
+                            <label class="form-control-label">Seleziona fascia oraria</label>
+                            <div class="input-group">
+                                <select name="hour_list" id="hour_list" class="form-control">
+                                    {% for h in hours %}
+                                        <option value="{{ h.id }}">{{ h.start_hour }} - {{ h.end_hour }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-xl-6 col-12">
+                        <button class="add-hour-button mt-4 btn btn-success mx-2" data-toggle="tooltip"
+                                data-placement="top"
+                                title="Aggiungi"><i class="fa fa-plus"></i> Aggiungi fascia
+                        </button>
+                        <button class="mod-hour-button mx-2 mt-4 btn btn-primary" data-toggle="tooltip"
+                                data-placement="top"
+                                title="Modifica"><i class="fa fa-edit"></i>Modifica fascia
+                        </button>
+                        <button class="del-hour-button mt-4 btn btn-light mx-2" data-toggle="tooltip"
+                                data-placement="top"
+                                title="Cancella"><i class="fa fa-minus-circle"></i>Cancella fascia
+                        </button>
+                    </div>
+                </div>
+                <div id="add_hours_box">
+                    {% include 'hours/add_hours_box.html' %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
